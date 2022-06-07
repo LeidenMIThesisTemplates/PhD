@@ -1,0 +1,42 @@
+%! TEX root = intro.tex
+\documentclass[../phdthesis]{subfiles}
+
+\begin{document}
+\ifSubfilesClassLoaded{\frontmatter}{}
+\chapter{Introduction}
+This setup allows you to work on chapters as standalone TeX-documents.
+In this case you could compile the file chapter1.tex in the chapter1 directory to only compile the first chapter.
+You could also compile phdthesis.pdf in the main document to compile everything.
+This is useful if your thesis becomes large.
+
+It is possible to put references between chapters by prepending the references with the string `M-'.
+To update all labels compile the main document.
+It's a bit hacky but this is how I got it to work.
+Example: Chapter \ref{M-chapter1} makes a reference to the chapter1 document.
+
+Also, in the file preamble.sty you'll find a line that you can uncomment in order to compile all tex-files in the 17x24mm format, with crop marks on A4 paper.
+This can be used when you want to send your thesis to the printer.
+
+\begin{definition}
+	This style uses gray boxes for theorems, definitions, et cetera.
+\end{definition}
+\begin{theorem}<theorem1>
+	Labels inside theorem boxes should be defined by putting them between \(<>\).
+	I couldn't get it to work with the \textbackslash label command.
+\end{theorem}
+Reference to Theorem \ref{theorem1}.
+
+\begin{theorem}(Description of theorem)
+	Descriptions of theorems can be added by putting them in between ().
+\end{theorem}
+
+\begin{theorem}>4.5.6<
+	It is also possible to change the number of a theorem by putting them between \(><\). This is useful if you want to show one of your theorems in your introduction.
+\end{theorem}
+
+
+
+\ifSubfilesClassLoaded{
+	\printbibliography
+}{}
+\end{document}

@@ -1,0 +1,96 @@
+\usepackage[most]{tcolorbox}
+\usetikzlibrary{calc,decorations.pathmorphing}
+
+% For boxes that use the common counter.
+\tcbset{new/ctr/.style={
+		use counter*=common
+}}
+
+% The standard box layout
+\tcbset{thmbox/.style n args={2}{
+	enhanced jigsaw,
+	boxrule=0pt,
+	sharp corners,
+	colback=Black!5!White,
+	colbacktitle=Black!5!White,
+	colframe=Black!60!White,
+	coltitle=Black,
+	leftrule=3pt,
+	breakable,
+	oversize,
+	before upper={\textbf{#2 \thetcbcounter. }},
+	before skip=\topsep,
+	after skip=\topsep,
+	overlay first={
+		\coordinate (bNW) at (interior.south west);
+		\coordinate (bNE) at (interior.south east);
+		\coordinate (bSW) at ($(bNW) + (0ex,-5pt)$);
+		\coordinate (bSE) at ($(bNE) + (0ex,-5pt)$);
+		\fill[fill=tcbcolback] 
+		let
+		\p{HOR} = ($ (bSW) - (bSE) $),
+		\n{LEN} = {veclen(\x{HOR},\y{HOR})},
+		\n{SLEN} = {\n{LEN}/round(\n{LEN}/(10pt))}
+		in
+		(bNW) -- (bNE) -- (bSE) decorate[decoration=zigzag,segment length=\n{SLEN}] {-- (bSW)} -- (bNW);
+	},
+	overlay middle={
+		\coordinate (bNW) at (interior.south west);
+		\coordinate (bNE) at (interior.south east);
+		\coordinate (bSW) at ($(bNW) + (0ex,-5pt)$);
+		\coordinate (bSE) at ($(bNE) + (0ex,-5pt)$);
+		\coordinate (tSW) at (interior.north west);
+		\coordinate (tSE) at (interior.north east);
+		\coordinate (tNW) at ($(tSW) + (0ex,+5pt)$);
+		\coordinate (tNE) at ($(tSE) + (0ex,+5pt)$);
+		\fill[fill=tcbcolback] 
+		let
+		\p{HOR} = ($ (bSW) - (bSE) $),
+		\n{LEN} = {veclen(\x{HOR},\y{HOR})},
+		\n{SLEN} = {\n{LEN}/round(\n{LEN}/(10pt))}
+		in
+		(bNW) -- (bNE) -- (bSE) decorate[decoration=zigzag,segment length=\n{SLEN}] {-- (bSW)} -- (bNW)
+		(tSW) -- (tSE) -- (tNE) decorate[decoration=zigzag,segment length=\n{SLEN}] {-- (tNW)} -- (tSW);
+	},
+	overlay last={
+		\coordinate (tSW) at (interior.north west);
+		\coordinate (tSE) at (interior.north east);
+		\coordinate (tNW) at ($(tSW) + (0ex,+5pt)$);
+		\coordinate (tNE) at ($(tSE) + (0ex,+5pt)$);
+		\fill[fill=tcbcolback] 
+		let
+		\p{HOR} = ($ (tNW) - (tNE) $),
+		\n{LEN} = {veclen(\x{HOR},\y{HOR})},
+		\n{SLEN} = {\n{LEN}/round(\n{LEN}/(10pt))}
+		in
+		(tSW) -- (tSE) -- (tNE) decorate[decoration=zigzag,segment length=\n{SLEN}] {-- (tNW)} -- (tSW);
+	},
+	#1
+}}
+
+
+%
+%	Theorem boxes
+%
+\newcommand\declarebtheorem[2]{
+	\DeclareTColorBox[ctr]{#1}{d()d<>d[]d><}{
+		IfValueTF={##2}{label={##2},}{},
+		IfValueTF={##3}{thmbox={##3}{#2},}{thmbox={}{#2},},
+		IfValueTF={##1}{
+			IfValueTF={##4}{
+				before upper={\textbf{#2 ##4\ }({##1})\textbf{. }},
+			}{
+				before upper={\textbf{#2 \thetcbcounter\ }({##1})\textbf{. }},
+			},
+		}{
+			IfValueTF={##4}{
+				before upper={\textbf{#2 ##4. }},
+			}{
+				before upper={\textbf{#2 \thetcbcounter. }},
+			},
+		},
+	}
+}
+\newcommand\newbtheorem[2]{\ifcsname #1\endcsname\PackageError{style.sty}{Environment #1 already exists}{}\else\declarebtheorem{#1}{#2}\fi}
+\newcommand\renewbtheorem[2]{\ifcsname #1\endcsname\declarebtheorem{#1}{#2}\else\PackageError{style.sty}{Environment #1 undefined}{}\fi}
+

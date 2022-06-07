@@ -1,0 +1,13 @@
+%! TEX root = chapter2.tex
+\documentclass[../phdthesis]{subfiles}
+\begin{document}
+
+\fixchaptercount{chapter2}
+\chapter{Second chapter}
+\label{chapter2}
+
+% Print bibliography only if compiling this chapter as standalone file.
+\ifSubfilesClassLoaded{
+	\printbibliography
+}{}
+\end{document}

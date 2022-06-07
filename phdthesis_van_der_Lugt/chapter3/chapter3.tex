@@ -1,0 +1,13 @@
+%! TEX root = chapter3.tex
+\documentclass[../phdthesis]{subfiles}
+\begin{document}
+
+\fixchaptercount{chapter3}
+\chapter{Third chapter}
+\label{chapter3}
+
+% Print bibliography only if compiling this chapter as standalone file.
+\ifSubfilesClassLoaded{
+	\printbibliography
+}{}
+\end{document}

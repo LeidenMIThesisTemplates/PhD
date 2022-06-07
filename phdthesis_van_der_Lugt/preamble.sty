@@ -1,0 +1,96 @@
+% Load necessary packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{./style} % Styled definition boxes
+\usepackage[style=alphabetic,sorting=anyt,useprefix,autolang=hyphen,backref=false,maxnames=4,maxalphanames=4,minnames=3,minalphanames=3,maxbibnames=99]{biblatex}
+\usepackage{subfiles}
+\usepackage{xr}
+\usepackage{refcount}
+
+\usepackage{csquotes}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+
+% Page layout settings.
+
+% STANDARD FORMAT: A4.
+\usepackage[a4paper]{geometry}
+% UNCOMMENT THE FOLLOWING LINE TO COMPILE 17x24cm PAGES CENTERED ON A4 WITH CROP MARKS, FOR PRINTER.
+%\usepackage[papersize={210mm,297mm},layoutsize={170mm,240mm},layoutoffset={20mm,28.5mm}, inner=25mm, outer=20mm, top=25mm, bottom=20mm ,showcrop=true]{geometry}
+
+\usepackage{changepage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[RE,LO]{}
+\fancyhead[LE]{\textit{\nouppercase{\leftmark}}}
+\fancyhead[RO]{\textit{\nouppercase{\rightmark}}}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[CE,CO]{}
+
+
+% Make empty page after chapter completely empty, so no page numbers or other decorations
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+		\begingroup
+		\mbox{}
+		\thispagestyle{empty}
+		\newpage
+	\if@twocolumn\mbox{}\newpage\fi
+\endgroup\fi\fi}
+
+% Remove chapter numbers from headers outside main matter
+\renewcommand{\chaptermark}[1]{%
+  \if@mainmatter
+    \markboth{Chapter \thechapter{}: #1}{}%
+  \else
+    \markboth{#1}{}%
+  \fi
+}
+
+% For subfiles: fix chapter number
+\newcommand{\fixchaptercount}[2][chapter]{
+	\ifSubfilesClassLoaded{
+			\@ifundefined{r@M-#2}{}{
+				\setcounterref{#1}{M-#2}
+				\addtocounter{#1}{-1}
+			}
+		}{}
+	}
+
+% Allow references between chapters in standalone files.
+\ifSubfilesClassLoaded{
+	\externaldocument[M-]{../phdthesis}
+}{
+	\externaldocument[M-]{phdthesis}
+}
+
+% Load bibliography from main folder.
+\ifSubfilesClassLoaded{
+	\IfFileExists{../biblio.bib}{
+		\addbibresource{../biblio.bib}
+	}{}
+}{
+	\IfFileExists{./biblio.bib}{
+		\addbibresource{biblio.bib}
+	}{}
+}
+
+% Theorem boxes
+\newcounter{common}
+\numberwithin{common}{section}% [if desired]
+
+% Define your boxes below this line!
+\newbtheorem{theorem}{Theorem}
+\newbtheorem{lemma}{Lemma}
+\newbtheorem{proposition}{Proposition}
+\newbtheorem{corollary}{Corollary}
+\newbtheorem{example}{Example}
+\newbtheorem{definition}{Definition}
+\newbtheorem{remark}{Remark}
+\newbtheorem{question}{Question}
+\newbtheorem{conjecture}{Conjecture}
